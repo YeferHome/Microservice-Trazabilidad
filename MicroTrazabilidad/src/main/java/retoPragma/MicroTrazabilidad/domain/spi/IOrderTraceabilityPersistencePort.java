@@ -10,4 +10,5 @@ public interface IOrderTraceabilityPersistencePort {
     void save(OrderTraceability traceability);
     CollectionModel<OrderTraceability> findAllByOrderId(Long orderId);
     OrderClientTraceability findClientTraceabilityByOrderId(Long orderId);
+    CollectionModel<OrderTraceability> findDeliveredOrdersByRestaurant(Long restaurantId);
 }

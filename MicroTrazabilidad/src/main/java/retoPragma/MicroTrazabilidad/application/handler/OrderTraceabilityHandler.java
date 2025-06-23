@@ -14,7 +14,6 @@ import retoPragma.MicroTrazabilidad.domain.spi.IOrderTraceabilityPersistencePort
 @RequiredArgsConstructor
 public class OrderTraceabilityHandler implements IOrderTraceabilityHandler {
 
-    private final @Qualifier("orderTraceabilityPersistencePort")
     IOrderTraceabilityPersistencePort traceabilityPersistencePort;
 
     private final IOrderTraceabilityResponseMapper responseMapper;

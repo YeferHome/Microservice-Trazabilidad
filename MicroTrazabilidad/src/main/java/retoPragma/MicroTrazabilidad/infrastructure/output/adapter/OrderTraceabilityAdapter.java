@@ -11,7 +11,6 @@ import retoPragma.MicroTrazabilidad.infrastructure.output.mapper.IOrderTraceabil
 import retoPragma.MicroTrazabilidad.infrastructure.output.repository.IOrderTraceabilityMongoRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -25,7 +24,6 @@ public class OrderTraceabilityAdapter implements IOrderTraceabilityPersistencePo
         OrderTraceabilityEntity entity = mapper.toEntity(traceability);
         repository.save(entity);
     }
-
 
     @Override
     public CollectionModel<OrderTraceability> findAllByOrderId(Long orderId) {
@@ -47,5 +45,11 @@ public class OrderTraceabilityAdapter implements IOrderTraceabilityPersistencePo
         CollectionModel<OrderTraceability> traceabilities = mapper.toModelCollection(entityCollection);
 
         return new OrderClientTraceability(clientId, traceabilities);
+    }
+    @Override
+    public CollectionModel<OrderTraceability> findDeliveredOrdersByRestaurant(Long restaurantId) {
+        List<OrderTraceabilityEntity> deliveredEntities = repository.findByNewStatusAndRestaurantId(restaurantId);
+        CollectionModel<OrderTraceabilityEntity> entityCollection = new CollectionModel<>(deliveredEntities);
+        return mapper.toModelCollection(entityCollection);
     }
 }
