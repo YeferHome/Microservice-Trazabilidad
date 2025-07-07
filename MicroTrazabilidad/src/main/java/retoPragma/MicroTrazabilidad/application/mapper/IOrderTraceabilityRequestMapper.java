@@ -5,7 +5,9 @@ import org.mapstruct.ReportingPolicy;
 import retoPragma.MicroTrazabilidad.application.dto.OrderTraceabilityRequestDto;
 import retoPragma.MicroTrazabilidad.domain.model.OrderTraceability;
 
-@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(
+        componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE, uses = {TimestampDtoMapper.class})
 public interface IOrderTraceabilityRequestMapper {
+
     OrderTraceability toOrderTraceability(OrderTraceabilityRequestDto dto);
 }

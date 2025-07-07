@@ -1,5 +1,12 @@
 package retoPragma.MicroTrazabilidad.application.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@AllArgsConstructor
 public class EmployeeRankingResponseDto {
     private Long employeeId;
     private long averageTime;

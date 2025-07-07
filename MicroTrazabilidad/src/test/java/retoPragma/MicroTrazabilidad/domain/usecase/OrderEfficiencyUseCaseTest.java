@@ -7,7 +7,9 @@ import retoPragma.MicroTrazabilidad.domain.spi.IOrderTraceabilityPersistencePort
 
 import java.util.Arrays;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+
+
 import static org.mockito.Mockito.*;
 
 class OrderEfficiencyUseCaseTest {
@@ -22,20 +24,32 @@ class OrderEfficiencyUseCaseTest {
     }
 
     @Test
-    void getOrderEfficiencySummary_shouldReturnSummary() {
-        TraceabilityTimestamp startTime = new TraceabilityTimestamp(2024, 1, 1, 12, 0, 0);
-        TraceabilityTimestamp endTime = new TraceabilityTimestamp(2024, 1, 1, 12, 10, 0);
+    void getOrderEfficiencySummary_shouldReturnCorrectSummary() {
+        Long restaurantId = 1L;
 
-        OrderTraceability startTrace = new OrderTraceability("1", 101L, 201L, 301L, "PENDIENTE", startTime, "EN_PREPARACION");
-        OrderTraceability endTrace = new OrderTraceability("2", 101L, 201L, 301L, "EN_PREPARACION", endTime, "ENTREGADO");
+        TraceabilityTimestamp start = new TraceabilityTimestamp(2023, 1, 1, 10, 0, 0);
+        TraceabilityTimestamp end = new TraceabilityTimestamp(2023, 1, 1, 10, 5, 0);
 
-        CollectionModel<OrderTraceability> traceList = new CollectionModel<>(Arrays.asList(startTrace, endTrace));
-        when(persistencePort.findDeliveredOrdersByRestaurant(1L)).thenReturn(traceList);
+        OrderTraceability trace1 = new OrderTraceability("1", 100L, 10L, 20L, "PENDIENTE", start, "EN_PREPARACION", restaurantId);
+        OrderTraceability trace2 = new OrderTraceability("2", 100L, 10L, 20L, "EN_PREPARACION", end, "ENTREGADO", restaurantId);
 
-        EfficiencySummaryModel result = useCase.getOrderEfficiencySummary(1L);
+        CollectionModel<OrderTraceability> traces = new CollectionModel<>(Arrays.asList(trace1, trace2));
 
-        assertEquals(1, result.getOrders().getItems().size()); 
-        assertEquals(1, result.getEmployeeRankings().getItems().size());
-        assertEquals(600, result.getGlobalAverageTime());
+        when(persistencePort.findDeliveredOrdersByRestaurant(restaurantId)).thenReturn(traces);
+
+        EfficiencySummaryModel summary = useCase.getOrderEfficiencySummary(restaurantId);
+
+        assertEquals(1, summary.getOrders().getItems().size());
+        assertEquals(1, summary.getEmployeeRankings().getItems().size());
+        assertEquals(300.0, summary.getGlobalAverageTime(), 0.001);
+
+        OrderEfficiencyModel efficiency = summary.getOrders().getItems().get(0);
+        assertEquals(100L, efficiency.getOrderId());
+        assertEquals(20L, efficiency.getEmployeeId());
+        assertEquals(300L, efficiency.getSecondsToComplete());
+
+        EmployeeRankingModel ranking = summary.getEmployeeRankings().getItems().get(0);
+        assertEquals(20L, ranking.getEmployeeId());
+        assertEquals(300.0, ranking.getAverageTime(), 0.001);
     }
 }

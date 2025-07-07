@@ -1,7 +1,13 @@
 package retoPragma.MicroTrazabilidad.application.dto;
 
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.List;
+@Getter
+@Setter
+@AllArgsConstructor
 public class EfficiencySummaryResponseDto {
     private double globalAverageTime;
     private List<EmployeeRankingResponseDto> employeeRankings;

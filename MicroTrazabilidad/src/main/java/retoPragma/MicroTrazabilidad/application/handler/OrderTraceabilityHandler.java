@@ -1,7 +1,6 @@
 package retoPragma.MicroTrazabilidad.application.handler;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import retoPragma.MicroTrazabilidad.application.dto.OrderTraceabilityResponseDto;
 import retoPragma.MicroTrazabilidad.application.mapper.IOrderTraceabilityResponseMapper;

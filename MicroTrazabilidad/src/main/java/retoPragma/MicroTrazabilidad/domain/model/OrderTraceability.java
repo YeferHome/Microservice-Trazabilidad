@@ -8,6 +8,7 @@ public class OrderTraceability {
     private Long employeeId;
     private String previousStatus;
     private String newStatus;
+    private Long restaurantId;
     private TraceabilityTimestamp timestamp;
 
     public OrderTraceability() {}
@@ -19,7 +20,8 @@ public class OrderTraceability {
             Long employeeId,
             String previousStatus,
             TraceabilityTimestamp timestamp,
-            String newStatus
+            String newStatus,
+            Long restaurantId
     ) {
         this.id = id;
         this.orderId = orderId;
@@ -28,6 +30,7 @@ public class OrderTraceability {
         this.previousStatus = previousStatus;
         this.timestamp = timestamp;
         this.newStatus = newStatus;
+        this.restaurantId = restaurantId;
     }
 
     public String getId() { return id; }
@@ -50,4 +53,7 @@ public class OrderTraceability {
 
     public TraceabilityTimestamp getTimestamp() { return timestamp; }
     public void setTimestamp(TraceabilityTimestamp timestamp) { this.timestamp = timestamp; }
+
+    public Long getRestaurantId() { return restaurantId; }
+    public void setRestaurantId(Long restaurantId) { this.restaurantId = restaurantId; }
 }

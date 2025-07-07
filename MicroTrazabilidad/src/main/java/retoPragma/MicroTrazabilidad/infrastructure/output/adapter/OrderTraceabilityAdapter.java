@@ -2,9 +2,9 @@ package retoPragma.MicroTrazabilidad.infrastructure.output.adapter;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import retoPragma.MicroTrazabilidad.domain.model.OrderTraceability;
 import retoPragma.MicroTrazabilidad.domain.model.CollectionModel;
 import retoPragma.MicroTrazabilidad.domain.model.OrderClientTraceability;
+import retoPragma.MicroTrazabilidad.domain.model.OrderTraceability;
 import retoPragma.MicroTrazabilidad.domain.spi.IOrderTraceabilityPersistencePort;
 import retoPragma.MicroTrazabilidad.infrastructure.output.entity.OrderTraceabilityEntity;
 import retoPragma.MicroTrazabilidad.infrastructure.output.mapper.IOrderTraceabilityEntityMapper;
@@ -46,9 +46,10 @@ public class OrderTraceabilityAdapter implements IOrderTraceabilityPersistencePo
 
         return new OrderClientTraceability(clientId, traceabilities);
     }
+
     @Override
     public CollectionModel<OrderTraceability> findDeliveredOrdersByRestaurant(Long restaurantId) {
-        List<OrderTraceabilityEntity> deliveredEntities = repository.findByNewStatusAndRestaurantId(restaurantId);
+        List<OrderTraceabilityEntity> deliveredEntities = repository.findByNewStatusAndRestaurantId("ENTREGADO", restaurantId);
         CollectionModel<OrderTraceabilityEntity> entityCollection = new CollectionModel<>(deliveredEntities);
         return mapper.toModelCollection(entityCollection);
     }
